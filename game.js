@@ -85,6 +85,7 @@ scene("game", () => {
         solid(),        // Prevent Mario from passing through ground
         pos(30, 0),
         body(),
+        big(),
         origin('bot')
     ])
 
@@ -104,6 +105,35 @@ scene("game", () => {
             player.jump(JUMP_FORCE)
         }
     })
+
+    function big() {
+        let timer = 0
+        let isBig = false
+        return {
+            update() {
+                if (isBig) {
+                    timer -= dt()
+
+                    if (timer <= 0) {
+                        this.smallify()
+                    }
+                }
+            },
+            isBig() {
+                return isBig
+            },
+            smallify() {
+                this.scale = vec2(1)
+                timer = 0
+                isBig = false
+            },
+            biggify(time) {
+                this.scale = vec2(2)
+                timer = time
+                isBig = true
+            }
+        }
+    }
 })
 
 start("game")
