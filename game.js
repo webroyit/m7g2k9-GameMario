@@ -27,3 +27,43 @@ loadSprite('blue-brick', '3e5YRQd.png')
 loadSprite('blue-steel', 'gqVoI2b.png')
 loadSprite('blue-evil-shroom', 'SvV4ueD.png')
 loadSprite('blue-surprise', 'RMqCc1G.png')
+
+scene("game", () => {
+    layers(['bg', 'obj', 'ui'], 'obj')
+
+    const map = [
+        '                                      ',
+        '                                      ',
+        '                                      ',
+        '                                      ',
+        '                                      ',
+        '                                      ',
+        '                                      ',
+        '                                      ',
+        '      $ =*=                           ',
+        '                              -+      ',
+        '                   ^   ^      ()      ',
+        '================================ ====='
+    ]
+
+    // Layout of the game
+    const levelCfg = {
+        width: 20,
+        height: 20,
+        '=': [sprite('block'), solid()],
+        '$': [sprite('coin'), 'coin'],
+        '%': [sprite('surprise'), solid(), 'coin-surprise'],
+        '*': [sprite('surprise'), solid(), 'mushroom-surprise'],
+        '}': [sprite('unboxed'), solid()],
+        '(': [sprite('pipe-bottom-left'), solid(), scale(0.5)],
+        ')': [sprite('pipe-bottom-right'), solid(), scale(0.5)],
+        '-': [sprite('pipe-top-left'), solid(), scale(0.5), 'pipe'],
+        '+': [sprite('pipe-top-right'), solid(), scale(0.5), 'pipe'],
+        '^': [sprite('evil-shroom'), solid()],
+        '#': [sprite('mushroom'), solid(), 'mushroom', body()],
+    }
+
+    const gameLevel = addLevel(map, levelCfg)
+})
+
+start("game")
