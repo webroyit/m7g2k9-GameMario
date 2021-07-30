@@ -7,6 +7,9 @@ kaboom({
     clearColor: [0, 0, 0, 1]    // Black Color
 })
 
+const MOVE_SPEED = 120
+const JUMP_FORCE = 360
+
 // Images
 loadRoot('https://i.imgur.com/')
 loadSprite('coin', 'wbKxhcd.png')
@@ -84,6 +87,23 @@ scene("game", () => {
         body(),
         origin('bot')
     ])
+
+    // Controls for Mario
+    keyDown('left', () => {
+        // (x-axis, y-axis)
+        player.move(-MOVE_SPEED, 0)
+    })
+
+    keyDown('right', () => {
+        // (x-axis, y-axis)
+        player.move(MOVE_SPEED, 0)
+    })
+
+    keyDown('space', () => {
+        if (player.grounded()) {
+            player.jump(JUMP_FORCE)
+        }
+    })
 })
 
 start("game")
