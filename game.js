@@ -64,6 +64,15 @@ scene("game", () => {
     }
 
     const gameLevel = addLevel(map, levelCfg)
+
+    // Add Mario
+    const player = add([
+        sprite('mario'),
+        solid(),        // Prevent Mario from passing through ground
+        pos(30, 0),
+        body(),
+        origin('bot')
+    ])
 })
 
 start("game")
