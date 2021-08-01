@@ -42,7 +42,7 @@ scene("game", () => {
         '                                      ',
         '                                      ',
         '                                      ',
-        '      % =*= %                        ',
+        '      %=*=%                           ',
         '                                      ',
         '                              -+      ',
         '                   ^   ^      ()      ',
@@ -63,7 +63,7 @@ scene("game", () => {
         '-': [sprite('pipe-top-left'), solid(), scale(0.5), 'pipe'],
         '+': [sprite('pipe-top-right'), solid(), scale(0.5), 'pipe'],
         '^': [sprite('evil-shroom'), solid()],
-        '#': [sprite('mushroom'), solid()],
+        '#': [sprite('mushroom'), solid(), 'mushroom', body()],     // body() to add gravity on the mushroom
     }
 
     const gameLevel = addLevel(map, levelCfg)
@@ -88,6 +88,11 @@ scene("game", () => {
         big(),
         origin('bot')
     ])
+
+    // Make the mushroom move
+    action('mushroom', m => {
+        m.move(20, 0);
+    })
 
     player.on("headbump", obj => {
         if (obj.is('coin-surprise')) {
