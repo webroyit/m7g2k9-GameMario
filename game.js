@@ -42,8 +42,8 @@ scene("game", () => {
         '                                      ',
         '                                      ',
         '                                      ',
+        '      % =*= %                        ',
         '                                      ',
-        '      $ =*=                           ',
         '                              -+      ',
         '                   ^   ^      ()      ',
         '================================ ====='
@@ -63,7 +63,7 @@ scene("game", () => {
         '-': [sprite('pipe-top-left'), solid(), scale(0.5), 'pipe'],
         '+': [sprite('pipe-top-right'), solid(), scale(0.5), 'pipe'],
         '^': [sprite('evil-shroom'), solid()],
-        '#': [sprite('mushroom'), solid(), 'mushroom', body()],
+        '#': [sprite('mushroom'), solid()],
     }
 
     const gameLevel = addLevel(map, levelCfg)
@@ -88,6 +88,25 @@ scene("game", () => {
         big(),
         origin('bot')
     ])
+
+    player.on("headbump", obj => {
+        if (obj.is('coin-surprise')) {
+            // Show Coin
+            gameLevel.spawn('$', obj.gridPos.sub(0, 1))
+            // Remove Box
+            destroy(obj)
+            // Show Empty Box
+            gameLevel.spawn('}', obj.gridPos.sub(0, 0))
+        }
+        if (obj.is('mushroom-surprise')) {
+            // Show Mushroom
+            gameLevel.spawn('#', obj.gridPos.sub(0, 1))
+            // Remove Box
+            destroy(obj)
+            // Show Empty Box
+            gameLevel.spawn('}', obj.gridPos.sub(0, 0))
+        }
+    })
 
     // Controls for Mario
     keyDown('left', () => {
