@@ -44,9 +44,9 @@ scene("game", () => {
         '                                      ',
         '      %=*=%                           ',
         '                                      ',
-        '                              -+      ',
-        '                   ^   ^      ()      ',
-        '================================ ====='
+        '                                  -+  ',
+        '                   ^   ^          ()  ',
+        '============================  ========'
     ]
 
     // Layout of the game
@@ -111,6 +111,19 @@ scene("game", () => {
             // Show Empty Box
             gameLevel.spawn('}', obj.gridPos.sub(0, 0))
         }
+    })
+
+    player.collides('mushroom', m => {
+        destroy(m)
+        // Make Mario big
+        player.biggify(6)
+    })
+
+    player.collides('coin', c => {
+        destroy(c)
+        // Add points
+        scoreLabel.value++
+        scoreLabel.text = scoreLabel.value
     })
 
     // Controls for Mario
