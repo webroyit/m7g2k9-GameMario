@@ -10,6 +10,7 @@ kaboom({
 const MOVE_SPEED = 120
 const JUMP_FORCE = 360
 const BIG_JUMP_FORCE = 450
+const ENEMY_SPEED = 20
 let CURRENT_JUMP_FORCE = JUMP_FORCE
 
 // Images
@@ -33,7 +34,7 @@ loadSprite('blue-steel', 'gqVoI2b.png')
 loadSprite('blue-evil-shroom', 'SvV4ueD.png')
 loadSprite('blue-surprise', 'RMqCc1G.png')
 
-scene("game", () => {
+scene("game", ({ score }) => {
     layers(['bg', 'obj', 'ui'], 'obj')
 
     const map = [
@@ -64,18 +65,18 @@ scene("game", () => {
         ')': [sprite('pipe-bottom-right'), solid(), scale(0.5)],
         '-': [sprite('pipe-top-left'), solid(), scale(0.5), 'pipe'],
         '+': [sprite('pipe-top-right'), solid(), scale(0.5), 'pipe'],
-        '^': [sprite('evil-shroom'), solid()],
+        '^': [sprite('evil-shroom'), solid(), 'dangerous'],
         '#': [sprite('mushroom'), solid(), 'mushroom', body()],     // body() to add gravity on the mushroom
     }
 
     const gameLevel = addLevel(map, levelCfg)
 
     const scoreLabel = add([
-        text('test'),
+        text(score),
         pos(30, 6),
         layer('ui'),
         {
-            value: 'test'
+            value: score
         }
     ])
 
@@ -94,6 +95,10 @@ scene("game", () => {
     // Make the mushroom move
     action('mushroom', m => {
         m.move(30, 0);
+    })
+    // Move the enemy
+    action('dangerous', m => {
+        m.move(-ENEMY_SPEED, 0);
     })
 
     player.on("headbump", obj => {
@@ -126,6 +131,10 @@ scene("game", () => {
         // Add points
         scoreLabel.value++
         scoreLabel.text = scoreLabel.value
+    })
+
+    player.collides('dangerous', d => {
+        go('lose', { score: scoreLabel})
     })
 
     // Controls for Mario
@@ -177,4 +186,8 @@ scene("game", () => {
     }
 })
 
-start("game")
+scene('lose', ({ score }) => {
+    add([text(score, 32), origin('center'), pos(width()/2, height()/ 2)])
+  })
+
+start("game", { score: 0 })
