@@ -12,6 +12,7 @@ const JUMP_FORCE = 360
 const BIG_JUMP_FORCE = 450
 const ENEMY_SPEED = 20
 let CURRENT_JUMP_FORCE = JUMP_FORCE
+let isJumping = true
 
 // Images
 loadRoot('https://i.imgur.com/')
@@ -134,7 +135,17 @@ scene("game", ({ score }) => {
     })
 
     player.collides('dangerous', d => {
-        go('lose', { score: scoreLabel})
+        if (isJumping) {
+            destroy(d)
+        } else {
+            go('lose', { score: scoreLabel})
+        }
+    })
+
+    player.action(() => {
+        if (player.grounded()) {
+            isJumping = false
+        }
     })
 
     // Controls for Mario
@@ -150,6 +161,7 @@ scene("game", ({ score }) => {
 
     keyDown('space', () => {
         if (player.grounded()) {
+            isJumping = true
             player.jump(CURRENT_JUMP_FORCE)
         }
     })
