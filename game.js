@@ -9,6 +9,8 @@ kaboom({
 
 const MOVE_SPEED = 120
 const JUMP_FORCE = 360
+const BIG_JUMP_FORCE = 450
+let CURRENT_JUMP_FORCE = JUMP_FORCE
 
 // Images
 loadRoot('https://i.imgur.com/')
@@ -91,7 +93,7 @@ scene("game", () => {
 
     // Make the mushroom move
     action('mushroom', m => {
-        m.move(20, 0);
+        m.move(30, 0);
     })
 
     player.on("headbump", obj => {
@@ -139,7 +141,7 @@ scene("game", () => {
 
     keyDown('space', () => {
         if (player.grounded()) {
-            player.jump(JUMP_FORCE)
+            player.jump(CURRENT_JUMP_FORCE)
         }
     })
 
@@ -149,6 +151,7 @@ scene("game", () => {
         return {
             update() {
                 if (isBig) {
+                    CURRENT_JUMP_FORCE = BIG_JUMP_FORCE
                     timer -= dt()
 
                     if (timer <= 0) {
@@ -161,6 +164,7 @@ scene("game", () => {
             },
             smallify() {
                 this.scale = vec2(1)
+                CURRENT_JUMP_FORCE = JUMP_FORCE
                 timer = 0
                 isBig = false
             },
