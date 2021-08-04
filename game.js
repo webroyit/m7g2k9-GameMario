@@ -36,7 +36,7 @@ loadSprite('blue-steel', 'gqVoI2b.png')
 loadSprite('blue-evil-shroom', 'SvV4ueD.png')
 loadSprite('blue-surprise', 'RMqCc1G.png')
 
-scene("game", ({ score }) => {
+scene("game", ({ level, score }) => {
     layers(['bg', 'obj', 'ui'], 'obj')
 
     const map = [
@@ -82,7 +82,7 @@ scene("game", ({ score }) => {
         }
     ])
 
-    add([text('level ' + 'test', pos(4, 6))])
+    add([text('level ' + parseInt(level + 1), pos(40, 6))])
 
     // Add Mario
     const player = add([
@@ -141,6 +141,15 @@ scene("game", ({ score }) => {
         } else {
             go('lose', { score: scoreLabel.value })
         }
+    })
+
+    player.collides('pipe', () => {
+        keyPress('down', () => {
+            go('game', {
+                level: (level + 1),
+                score: scoreLabel.value
+            })
+        })
     })
 
     player.action(() => {
@@ -212,4 +221,4 @@ scene('lose', ({ score }) => {
     add([text(score, 32), origin('center'), pos(width()/2, height()/ 2)])
   })
 
-start("game", { score: 0 })
+start("game", { level: 0, score: 0 })
