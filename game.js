@@ -13,6 +13,7 @@ const BIG_JUMP_FORCE = 450
 const ENEMY_SPEED = 20
 let CURRENT_JUMP_FORCE = JUMP_FORCE
 let isJumping = true
+const FALL_DEATH = 400
 
 // Images
 loadRoot('https://i.imgur.com/')
@@ -50,7 +51,7 @@ scene("game", ({ score }) => {
         '                                      ',
         '                                  -+  ',
         '                   ^   ^          ()  ',
-        '============================  ========'
+        '============================   ======='
     ]
 
     // Layout of the game
@@ -138,13 +139,19 @@ scene("game", ({ score }) => {
         if (isJumping) {
             destroy(d)
         } else {
-            go('lose', { score: scoreLabel})
+            go('lose', { score: scoreLabel.value })
         }
     })
 
     player.action(() => {
         if (player.grounded()) {
             isJumping = false
+        }
+    })
+
+    player.action(() => {
+        if (player.pos.y >= FALL_DEATH) {
+            go('lose', { score: scoreLabel.value })
         }
     })
 
