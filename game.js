@@ -150,6 +150,9 @@ scene("game", ({ score }) => {
     })
 
     player.action(() => {
+        // Move camera when Mario move
+        camPos(player.pos)
+
         if (player.pos.y >= FALL_DEATH) {
             go('lose', { score: scoreLabel.value })
         }
